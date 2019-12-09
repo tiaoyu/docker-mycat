@@ -1,0 +1,218 @@
+version: "3.3"
+services:
+  mycat-master-1:
+    build: ./mycat-master
+    container_name: mycat-master-1
+    hostname: mycat-master-1
+    expose:
+      - 8066
+      - 9066
+    ports:
+      - "8166:8066"
+      - "9166:9066"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../configs/mycat-1:/app/mycat/conf
+      - ../logs/mycat-1:/app/mycat/logs
+    links:
+      - mysql-master-a:mysql-master-a
+      - mysql-slave-a1:mysql-slave-a1
+      - mysql-master-b:mysql-master-b
+      - mysql-slave-b1:mysql-slave-b1
+      - mysql-master-c:mysql-master-c
+      - mysql-slave-c1:mysql-slave-c1
+  mycat-master-2:
+    build: ./mycat-master
+    container_name: mycat-master-2
+    hostname: mycat-master-2
+    expose:
+      - 8066
+      - 9066
+    ports:
+      - "8266:8066"
+      - "9266:9066"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../configs/mycat-2:/app/mycat/conf
+      - ../logs/mycat-2:/app/mycat/logs
+    links:
+      - mysql-master-a:mysql-master-a
+      - mysql-slave-a1:mysql-slave-a1
+      - mysql-master-b:mysql-master-b
+      - mysql-slave-b1:mysql-slave-b1
+      - mysql-master-c:mysql-master-c
+      - mysql-slave-c1:mysql-slave-c1
+  mycat-master-3:
+    build: ./mycat-master
+    container_name: mycat-master-3
+    hostname: mycat-master-3
+    expose:
+      - 8066
+      - 9066
+    ports:
+      - "8366:8066"
+      - "9366:9066"
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../configs/mycat-3:/app/mycat/conf
+      - ../logs/mycat-3:/app/mycat/logs
+    links:
+      - mysql-master-a:mysql-master-a
+      - mysql-slave-a1:mysql-slave-a1
+      - mysql-master-b:mysql-master-b
+      - mysql-slave-b1:mysql-slave-b1
+      - mysql-master-c:mysql-master-c
+      - mysql-slave-c1:mysql-slave-c1
+  mysql-master-a:
+    image: mysql:${MYSQL_VERSION}
+    container_name: mysql-master-a
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # set mysql pwd
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../data/mysql-master-a/data:/var/lib/mysql
+      - ../data/m1platform.sql:/docker-entrypoint-initdb.d/1-schema.sql # db structure
+      - ../configs/mysql-master-a/my.cnf:/etc/mysql/my.cnf
+      #- /etc/localtime:/etc/localtime 由于mac docker无法获得权限 在Linux中打开注释即可
+    expose:
+      - "3306"
+    ports:
+      - "3307:3306"
+    command: [
+      "--character-set-server=utf8"
+      ]
+  mysql-slave-a1:
+    image: mysql:${MYSQL_VERSION}
+    container_name: mysql-slave-a1
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # set mysql pwd
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../data/mysql-slave-a1/data:/var/lib/mysql
+      - ../data/m1platform.sql:/docker-entrypoint-initdb.d/1-schema.sql # db structure
+      - ../configs/mysql-slave-a1/my.cnf:/etc/mysql/my.cnf
+    expose:
+      - "3306"
+    ports:
+      - "3317:3306"
+    command: [
+      "--character-set-server=utf8"
+      ]
+  mysql-master-b:
+    image: mysql:${MYSQL_VERSION}
+    container_name: mysql-master-b
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # set mysql pwd
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../data/mysql-master-b/data:/var/lib/mysql
+      - ../data/m1platform.sql:/docker-entrypoint-initdb.d/1-schema.sql # db structure
+      - ../configs/mysql-master-b/my.cnf:/etc/mysql/my.cnf
+      #- /etc/localtime:/etc/localtime 由于mac docker无法获得权限 在Linux中打开注释即可
+    expose:
+      - "3306"
+    ports:
+      - "3308:3306"
+    command: [
+      "--character-set-server=utf8"
+      ]
+  mysql-slave-b1:
+    image: mysql:${MYSQL_VERSION}
+    container_name: mysql-slave-b1
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # set mysql pwd
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../data/mysql-slave-b1/data:/var/lib/mysql
+      - ../data/m1platform.sql:/docker-entrypoint-initdb.d/1-schema.sql # db structure
+      - ../configs/mysql-slave-b1/my.cnf:/etc/mysql/my.cnf
+    expose:
+      - "3306"
+    ports:
+      - "3318:3306"
+    command: [
+      "--character-set-server=utf8"
+      ]
+  mysql-master-c:
+    image: mysql:${MYSQL_VERSION}
+    container_name: mysql-master-c
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # set mysql pwd
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../data/mysql-master-c/data:/var/lib/mysql
+      - ../data/m1platform.sql:/docker-entrypoint-initdb.d/1-schema.sql # db structure
+      - ../configs/mysql-master-c/my.cnf:/etc/mysql/my.cnf
+      #- /etc/localtime:/etc/localtime 由于mac docker无法获得权限 在Linux中打开注释即可
+    expose:
+      - "3306"
+    ports:
+      - "3309:3306"
+    command: [
+      "--character-set-server=utf8"
+      ]
+  mysql-slave-c1:
+    image: mysql:${MYSQL_VERSION}
+    container_name: mysql-slave-c1
+    restart: unless-stopped
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # set mysql pwd
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../data/mysql-slave-c1/data:/var/lib/mysql
+      - ../data/m1platform.sql:/docker-entrypoint-initdb.d/1-schema.sql # db structure
+      - ../configs/mysql-slave-c1/my.cnf:/etc/mysql/my.cnf
+    expose:
+      - "3306"
+    ports:
+      - "3319:3306"
+    command: [
+      "--character-set-server=utf8"
+      ]
+  zoo1:
+    image: zookeeper:${ZOOKEEPER_VERSION}
+    restart: always
+    hostname: zoo1
+    container_name: zookeeper_1
+    ports:
+      - 2181:2181
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../data/zookeeper/zoo1/data:/data
+      - ../data/zookeeper/zoo1/datalog:/datalog
+    environment:
+      ZOO_MY_ID: 1
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+  zoo2:
+    image: zookeeper:${ZOOKEEPER_VERSION}
+    restart: always
+    hostname: zoo2
+    container_name: zookeeper_2
+    ports:
+      - 2182:2181
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../data/zookeeper/zoo2/data:/data
+      - ../data/zookeeper/zoo2/datalog:/datalog
+    environment:
+      ZOO_MY_ID: 2
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+  zoo3:
+    image: zookeeper:${ZOOKEEPER_VERSION}
+    restart: always
+    hostname: zoo3
+    container_name: zookeeper_3
+    ports:
+      - 2183:2181
+    volumes:
+      - /etc/localtime:/etc/localtime:ro
+      - ../data/zookeeper/zoo3/data:/data
+      - ../data/zookeeper/zoo3/datalog:/datalog
+    environment:
+      ZOO_MY_ID: 3
+      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
