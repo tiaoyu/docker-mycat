@@ -216,3 +216,33 @@ services:
     environment:
       ZOO_MY_ID: 3
       ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+  haproxy-1:
+    image: haproxy:${HAPROXY_VERSION}
+    container_name: haproxy-1
+    hostname: haproxy-1
+    restart: unless-stopped
+    volumes:
+      - ../configs/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    expose:
+      - 8888
+    ports:
+      - 8888:8888
+    links:
+      - mycat-master-1:mycat-master-1
+      - mycat-master-2:mycat-master-2
+      - mycat-master-3:mycat-master-3
+  haproxy-2:
+    image: haproxy:${HAPROXY_VERSION}
+    container_name: haproxy-2
+    hostname: haproxy-2
+    restart: unless-stopped
+    volumes:
+      - ../configs/haproxy/haproxy.cfg:/usr/local/etc/haproxy/haproxy.cfg
+    expose:
+      - 8888
+    ports:
+      - 9999:8888
+    links:
+      - mycat-master-1:mycat-master-1
+      - mycat-master-2:mycat-master-2
+      - mycat-master-3:mycat-master-3
