@@ -8,5 +8,5 @@ WORKDIR /app
 COPY Mycat-server.tgz /app/
 RUN tar -zxvf Mycat-server.tgz
 WORKDIR /app/mycat/bin
-CMD ["./init_zk_data.sh"]
-CMD ["./mycat", "console"]
+COPY start_with_zk.sh /app/mycat/bin
+ENTRYPOINT ["sh","start_with_zk.sh","/app/mycat"]

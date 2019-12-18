@@ -8,6 +8,10 @@
         <table name="rolename" dataNode="dn1,dn2,dn3" primaryKey="Name" rule="jch"/>
         <!-- <table name="oc_call" primaryKey="ID" dataNode="dn1$0-743" rule="latest-month-calldate" /> -->
     </schema>
+    <schema name="m1platform" checkSQLschema="true" sqlMaxLimit="100">
+        <table name="role" dataNode="dn1,dn2,dn3" primaryKey="RoleId" rule="mod-long"/>
+        <table name="rolename" dataNode="dn1,dn2,dn3" primaryKey="Name" rule="jch"/>
+    </schema>
     <!-- <dataNode name="dn1$0-743" dataHost="localhost1" database="db$0-743" /> -->
     <dataNode name="dn1" dataHost="localhost1" database="m1platform"/>
     <dataNode name="dn2" dataHost="localhost2" database="m1platform"/>
@@ -18,22 +22,22 @@
     <dataHost name="localhost1" maxCon="1000" minCon="10" balance="3" writeType="0" dbType="mysql" dbDriver="native" switchType="1" slaveThreshold="100">
         <heartbeat>select user()</heartbeat>
         <!-- can have multi write hosts -->
-        <writeHost host="hostMA" url="mysql-master-a:3306" user="root" password="123456">
-            <readHost host="hostSA1" url="mysql-slave-a1:3306" user="root" password="123456"/>
+        <writeHost host="hostMA" url="172.16.238.20:3306" user="root" password="123456">
+            <readHost host="hostSA1" url="172.16.238.21:3306" user="root" password="123456"/>
         </writeHost>
     </dataHost>
     <dataHost name="localhost2" maxCon="1000" minCon="10" balance="3" writeType="0" dbType="mysql" dbDriver="native" switchType="1" slaveThreshold="100">
         <heartbeat>select user()</heartbeat>
         <!-- can have multi write hosts -->
-        <writeHost host="hostMB" url="mysql-master-b:3306" user="root" password="123456">
-            <readHost host="hostSB1" url="mysql-slave-b1:3306" user="root" password="123456"/>
+        <writeHost host="hostMB" url="172.16.238.22:3306" user="root" password="123456">
+            <readHost host="hostSB1" url="172.16.238.23:3306" user="root" password="123456"/>
         </writeHost>
     </dataHost>
     <dataHost name="localhost3" maxCon="1000" minCon="10" balance="3" writeType="0" dbType="mysql" dbDriver="native" switchType="1" slaveThreshold="100">
         <heartbeat>select user()</heartbeat>
         <!-- can have multi write hosts -->
-        <writeHost host="hostMC" url="mysql-master-c:3306" user="root" password="123456">
-            <readHost host="hostSC1" url="mysql-slave-c1:3306" user="root" password="123456"/>
+        <writeHost host="hostMC" url="172.16.238.24:3306" user="root" password="123456">
+            <readHost host="hostSC1" url="172.16.238.25:3306" user="root" password="123456"/>
         </writeHost>
     </dataHost>
     <!-- <dataHost name="sequoiadb1" maxCon="1000" minCon="1" balance="0" dbType="sequoiadb" dbDriver="jdbc"> <heartbeat> </heartbeat> <writeHost host="hostM1" url="sequoiadb://1426587161.dbaas.sequoialab.net:11920/SAMPLE" user="jifeng"

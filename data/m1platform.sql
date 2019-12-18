@@ -1,18 +1,3 @@
-﻿/*
-Navicat MySQL Data Transfer
-
-Source Server         : localhost
-Source Server Version : 50640
-Source Host           : localhost:3306
-Source Database       : m1platform
-
-Target Server Type    : MYSQL
-Target Server Version : 50640
-File Encoding         : 65001
-
-Date: 2018-11-29 21:17:54
-*/
-
 SET FOREIGN_KEY_CHECKS=0;
 
 DROP Database IF EXISTS `m1platform`;

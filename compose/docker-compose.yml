@@ -1,4 +1,4 @@
-version: "3.3"
+version: "2"
 services:
   mycat-master-1:
     build: ./mycat-master
@@ -11,7 +11,7 @@ services:
       - "8166:8066"
       - "9166:9066"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      #- /etc/localtime:/etc/localtime:ro
       - ../configs/mycat-1:/app/mycat/conf
       - ../logs/mycat-1:/app/mycat/logs
     links:
@@ -21,6 +21,15 @@ services:
       - mysql-slave-b1:mysql-slave-b1
       - mysql-master-c:mysql-master-c
       - mysql-slave-c1:mysql-slave-c1
+      - zoo1:zoo1
+      - zoo2:zoo2
+      - zoo3:zoo3
+    command: [
+      "console"
+      ]
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.10
   mycat-master-2:
     build: ./mycat-master
     container_name: mycat-master-2
@@ -32,7 +41,7 @@ services:
       - "8266:8066"
       - "9266:9066"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      #- /etc/localtime:/etc/localtime:ro
       - ../configs/mycat-2:/app/mycat/conf
       - ../logs/mycat-2:/app/mycat/logs
     links:
@@ -42,6 +51,15 @@ services:
       - mysql-slave-b1:mysql-slave-b1
       - mysql-master-c:mysql-master-c
       - mysql-slave-c1:mysql-slave-c1
+      - zoo1:zoo1
+      - zoo2:zoo2
+      - zoo3:zoo3
+    command: [
+      "console"
+      ]
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.11
   mycat-master-3:
     build: ./mycat-master
     container_name: mycat-master-3
@@ -53,7 +71,7 @@ services:
       - "8366:8066"
       - "9366:9066"
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      #- /etc/localtime:/etc/localtime:ro
       - ../configs/mycat-3:/app/mycat/conf
       - ../logs/mycat-3:/app/mycat/logs
     links:
@@ -63,6 +81,15 @@ services:
       - mysql-slave-b1:mysql-slave-b1
       - mysql-master-c:mysql-master-c
       - mysql-slave-c1:mysql-slave-c1
+      - zoo1:zoo1
+      - zoo2:zoo2
+      - zoo3:zoo3
+    command: [
+      "console"
+      ]
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.12
   mysql-master-a:
     image: mysql:${MYSQL_VERSION}
     container_name: mysql-master-a
@@ -70,11 +97,11 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # set mysql pwd
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      #- /etc/localtime:/etc/localtime:ro
       - ../data/mysql-master-a/data:/var/lib/mysql
       - ../data/m1platform.sql:/docker-entrypoint-initdb.d/1-schema.sql # db structure
       - ../configs/mysql-master-a/my.cnf:/etc/mysql/my.cnf
-      #- /etc/localtime:/etc/localtime 由于mac docker无法获得权限 在Linux中打开注释即可
+      ##- /etc/localtime:/etc/localtime 由于mac docker无法获得权限 在Linux中打开注释即可
     expose:
       - "3306"
     ports:
@@ -82,6 +109,9 @@ services:
     command: [
       "--character-set-server=utf8"
       ]
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.20
   mysql-slave-a1:
     image: mysql:${MYSQL_VERSION}
     container_name: mysql-slave-a1
@@ -89,7 +119,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # set mysql pwd
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      #- /etc/localtime:/etc/localtime:ro
       - ../data/mysql-slave-a1/data:/var/lib/mysql
       - ../data/m1platform.sql:/docker-entrypoint-initdb.d/1-schema.sql # db structure
       - ../configs/mysql-slave-a1/my.cnf:/etc/mysql/my.cnf
@@ -100,6 +130,9 @@ services:
     command: [
       "--character-set-server=utf8"
       ]
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.21
   mysql-master-b:
     image: mysql:${MYSQL_VERSION}
     container_name: mysql-master-b
@@ -107,11 +140,11 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # set mysql pwd
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      #- /etc/localtime:/etc/localtime:ro
       - ../data/mysql-master-b/data:/var/lib/mysql
       - ../data/m1platform.sql:/docker-entrypoint-initdb.d/1-schema.sql # db structure
       - ../configs/mysql-master-b/my.cnf:/etc/mysql/my.cnf
-      #- /etc/localtime:/etc/localtime 由于mac docker无法获得权限 在Linux中打开注释即可
+      ##- /etc/localtime:/etc/localtime 由于mac docker无法获得权限 在Linux中打开注释即可
     expose:
       - "3306"
     ports:
@@ -119,6 +152,9 @@ services:
     command: [
       "--character-set-server=utf8"
       ]
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.22
   mysql-slave-b1:
     image: mysql:${MYSQL_VERSION}
     container_name: mysql-slave-b1
@@ -126,7 +162,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # set mysql pwd
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      #- /etc/localtime:/etc/localtime:ro
       - ../data/mysql-slave-b1/data:/var/lib/mysql
       - ../data/m1platform.sql:/docker-entrypoint-initdb.d/1-schema.sql # db structure
       - ../configs/mysql-slave-b1/my.cnf:/etc/mysql/my.cnf
@@ -137,6 +173,9 @@ services:
     command: [
       "--character-set-server=utf8"
       ]
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.23
   mysql-master-c:
     image: mysql:${MYSQL_VERSION}
     container_name: mysql-master-c
@@ -144,11 +183,11 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # set mysql pwd
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      #- /etc/localtime:/etc/localtime:ro
       - ../data/mysql-master-c/data:/var/lib/mysql
       - ../data/m1platform.sql:/docker-entrypoint-initdb.d/1-schema.sql # db structure
       - ../configs/mysql-master-c/my.cnf:/etc/mysql/my.cnf
-      #- /etc/localtime:/etc/localtime 由于mac docker无法获得权限 在Linux中打开注释即可
+      ##- /etc/localtime:/etc/localtime 由于mac docker无法获得权限 在Linux中打开注释即可
     expose:
       - "3306"
     ports:
@@ -156,6 +195,9 @@ services:
     command: [
       "--character-set-server=utf8"
       ]
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.24
   mysql-slave-c1:
     image: mysql:${MYSQL_VERSION}
     container_name: mysql-slave-c1
@@ -163,7 +205,7 @@ services:
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD} # set mysql pwd
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      #- /etc/localtime:/etc/localtime:ro
       - ../data/mysql-slave-c1/data:/var/lib/mysql
       - ../data/m1platform.sql:/docker-entrypoint-initdb.d/1-schema.sql # db structure
       - ../configs/mysql-slave-c1/my.cnf:/etc/mysql/my.cnf
@@ -174,6 +216,9 @@ services:
     command: [
       "--character-set-server=utf8"
       ]
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.25
   zoo1:
     image: zookeeper:${ZOOKEEPER_VERSION}
     restart: always
@@ -182,12 +227,15 @@ services:
     ports:
       - 2181:2181
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      #- /etc/localtime:/etc/localtime:ro
       - ../data/zookeeper/zoo1/data:/data
       - ../data/zookeeper/zoo1/datalog:/datalog
     environment:
       ZOO_MY_ID: 1
-      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+      ZOO_SERVERS: server.1=172.16.238.30:2888:3888 server.2=172.16.238.31:2888:3888 server.3=172.16.238.32:2888:3888
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.30
   zoo2:
     image: zookeeper:${ZOOKEEPER_VERSION}
     restart: always
@@ -196,12 +244,15 @@ services:
     ports:
       - 2182:2181
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      #- /etc/localtime:/etc/localtime:ro
       - ../data/zookeeper/zoo2/data:/data
       - ../data/zookeeper/zoo2/datalog:/datalog
     environment:
       ZOO_MY_ID: 2
-      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+      ZOO_SERVERS: server.1=172.16.238.30:2888:3888 server.2=172.16.238.31:2888:3888 server.3=172.16.238.32:2888:3888
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.31
   zoo3:
     image: zookeeper:${ZOOKEEPER_VERSION}
     restart: always
@@ -210,12 +261,15 @@ services:
     ports:
       - 2183:2181
     volumes:
-      - /etc/localtime:/etc/localtime:ro
+      #- /etc/localtime:/etc/localtime:ro
       - ../data/zookeeper/zoo3/data:/data
       - ../data/zookeeper/zoo3/datalog:/datalog
     environment:
       ZOO_MY_ID: 3
-      ZOO_SERVERS: server.1=zoo1:2888:3888 server.2=zoo2:2888:3888 server.3=zoo3:2888:3888
+      ZOO_SERVERS: server.1=172.16.238.30:2888:3888 server.2=172.16.238.31:2888:3888 server.3=172.16.238.32:2888:3888
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.32
   haproxy-1:
     image: haproxy:${HAPROXY_VERSION}
     container_name: haproxy-1
@@ -231,6 +285,9 @@ services:
       - mycat-master-1:mycat-master-1
       - mycat-master-2:mycat-master-2
       - mycat-master-3:mycat-master-3
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.40
   haproxy-2:
     image: haproxy:${HAPROXY_VERSION}
     container_name: haproxy-2
@@ -246,3 +303,12 @@ services:
       - mycat-master-1:mycat-master-1
       - mycat-master-2:mycat-master-2
       - mycat-master-3:mycat-master-3
+    networks:
+      app_net:
+        ipv4_address: 172.16.238.41
+networks:
+  app_net:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.16.238.0/24"
